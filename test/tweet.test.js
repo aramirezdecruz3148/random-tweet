@@ -66,7 +66,7 @@ describe('app routes', () => {
       handle: '@something-cool-as-hell',
       text: 'I am cool as HELL!' 
     });
-    
+
     return request(app)
       .get(`/api/v1/tweets/${tweet._id}`) 
       .then(res => {
@@ -74,6 +74,24 @@ describe('app routes', () => {
           _id: expect.any(String),
           handle: '@something-cool-as-hell',
           text: 'I am cool as HELL!'
+        });
+      });
+  });
+
+  it('can update a tweets text', async() => {
+    const tweet = await Tweet.create({ 
+      handle: '@something-cool-as-hell',
+      text: 'I am cool as HELL!' 
+    });
+
+    return request(app)
+      .patch(`/api/v1/tweets/${tweet._id}`)
+      .send({ text: 'seriously though' })
+      .then(res => {
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          handle: '@something-cool-as-hell',
+          text: 'seriously though'
         });
       });
   });
