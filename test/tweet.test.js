@@ -95,4 +95,17 @@ describe('app routes', () => {
         });
       });
   });
+
+  it('can delete a tweet', async() => {
+    const tweet = await Tweet.create({ 
+      handle: '@something-cool-as-hell',
+      text: 'I am cool as HELL!' 
+    });
+
+    return request(app)
+      .delete(`/api/v1/tweets/${tweet._id}`)
+      .then(res => {
+        expect(res.body.text).toEqual('I am cool as HELL!');
+      });
+  }); 
 });
