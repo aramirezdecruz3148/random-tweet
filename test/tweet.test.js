@@ -19,7 +19,7 @@ describe('app routes', () => {
     return mongoose.connection.close();
   });
 
-  it('can create a tweet', () => {
+  it('can create a tweet if random is false', () => {
     return request(app)
       .post('/api/v1/tweets')
       .send({
@@ -31,6 +31,25 @@ describe('app routes', () => {
           _id: expect.any(String),
           handle: '@something-cool-as-hell',
           text: 'I am cool as HELL!',
+          __v: 0
+        });
+      });
+  });
+
+  it('can create a tweet using random Ron Swanson quote if random is true', async() => {
+    return request(app)
+      .post('/api/v1/tweets?random=true')
+      .send({
+        handle: '@something-cool-as-hell',
+        text: ''
+      })
+      .then(res => {
+        // eslint-disable-next-line no-console
+        console.log(res.body);
+        expect(res.body).toEqual({
+          _id: expect.any(String),
+          handle: '@something-cool-as-hell',
+          text: expect.any(String),
           __v: 0
         });
       });
